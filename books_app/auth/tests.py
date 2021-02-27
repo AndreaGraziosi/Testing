@@ -49,7 +49,7 @@ class AuthTests(TestCase):
         pass
 
     def test_signup_existing_user(self):
-        # TODO: Write a test for the signup route. It should:
+           # TODO: Write a test for the signup route. It should:
         # - Create a user
         # - Make a POST request to /signup, sending the same username & password
         # - Check that the form is displayed again with an error message
