@@ -245,7 +245,7 @@ class MainTests(unittest.TestCase):
 
         }
         self.app.post('/create_genre', data=post_data)
-        # TODO: Verify that the genre was updated in the database
+        # Verify that the genre was updated in the database
         created_genre = Genre.query.filter_by(name='genre name').one()
         self.assertIsNotNone(created_genre)
         self.assertEqual(created_genre.name,'genre name')
@@ -257,35 +257,50 @@ class MainTests(unittest.TestCase):
         response = self.app.get('/profile/me1', follow_redirects=True)
         self.assertEqual(response.status_code, 200)
 
-        # TODO: Verify that the response shows the appropriate user info
+        #  Verify that the response shows the appropriate user info
         response_text = response.get_data(as_text=True)
         self.assertIn('me1', response_text)
         self.assertIn('me1\'s favorite books are:', response_text)
         
     def test_favorite_book(self):
-        # TODO: Login as the user me1
+        #  Login as the user me1
+        create_books()
         create_user()
         login(self.app, 'me1', 'password')
 
-        # TODO: Make a POST request to the /favorite/1 route
+        #  Make a POST request to the /favorite/1 route
+        
         post_data = {
             'username': 'me1',
             'favorite_books': 'favorite books'
         }
-
-        # TODO: Verify that the book with id 1 was added to the user's favorites
-        #created_author = Author.query.filter_by(name='Sylvia Plath').first()
-        #self.assertIsNotNone(created_author)
-        #self.assertEqual(created_author.author.name,'Sylvia Plath')
+        self.app.post('/favorite_book', data=post_data)
+        # Verify that the book with id 1 was added to the user's favorites
+       
+        created_book = Book.query.filter_by(id=1).one()
+        self.assertIsNotNone(created_book)
+        self.assertEqual(created_book.id,1)
 
 
     def test_unfavorite_book(self):
         # TODO: Login as the user me1, and add book with id 1 to me1's favorites
         create_user()
         login(self.app, 'me1', 'password')
+        create_books()
+
+        post_data = {
+            'username': 'me1',
+            'favorite_books': 'favorite books',
+            'id':1
+        }
+        self.app.post('/unfavorite_book', data=post_data)
 
         # TODO: Make a POST request to the /unfavorite/1 route
 
         # TODO: Verify that the book with id 1 was removed from the user's 
         # favorites
-        pass
+        created_book = Book.query.filter_by(id=1).one()
+        self.assertIsNotNone(created_book)
+        self.assertNotIn(created_book.id,1)
+        
+        

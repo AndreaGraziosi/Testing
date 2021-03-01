@@ -8,7 +8,7 @@ from books_app.models import Book, Author, User, Audience
 
 """
 Run these tests with the command:
-python -m unittest books_app.main.tests
+python -m unittest books_app.auth.tests
 """
 
 #################################################
@@ -46,22 +46,32 @@ class AuthTests(TestCase):
         # TODO: Write a test for the signup route. It should:
         # - Make a POST request to /signup, sending a username & password
         # - Check that the user now exists in the database
-        pass
+        create_user()
+
+        post_data = {
+            'username' :'me1',
+            'password' :'password_hash'
+        }
+        self.app.post('/signup', data=post_data)
+
+        created_user = User.query.filter_by(username='me1').one()
+        self.assertIsNotNone(created_user)
+        self.assertEqual(created_user.username,"me1")
+
 
     def test_signup_existing_user(self):
            # TODO: Write a test for the signup route. It should:
         # - Create a user
         # - Make a POST request to /signup, sending the same username & password
         # - Check that the form is displayed again with an error message
-        pass
+      
 
     def test_login_correct_password(self):
         # TODO: Write a test for the login route. It should:
         # - Create a user
         # - Make a POST request to /login, sending the created username & password
         # - Check that the "login" button is not displayed on the homepage
-        pass
-
+    
     def test_login_nonexistent_user(self):
         # TODO: Write a test for the login route. It should:
         # - Make a POST request to /login, sending a username & password
