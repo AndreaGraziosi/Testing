@@ -64,20 +64,48 @@ class AuthTests(TestCase):
         # - Create a user
         # - Make a POST request to /signup, sending the same username & password
         # - Check that the form is displayed again with an error message
-      
+        create_user()
+
+        post_data = {
+            'username' :'me1',
+            'password' :'password_hash'
+        }
+         
+        res = create_user.post('/signup', data=post_data)
+        self.assertEqual(res.status_code, 200)
+        
+        result_page_text = res.get_data(as_text=True)
+        self.assertIn('That username is taken. Please choose a different one', result_page_text)
+
 
     def test_login_correct_password(self):
         # TODO: Write a test for the login route. It should:
         # - Create a user
         # - Make a POST request to /login, sending the created username & password
         # - Check that the "login" button is not displayed on the homepage
-    
+        create_user()
+        post_data = {
+            'username' :'me1',
+            'password' :'password_hash'
+        }
+        res = create_user.post('/signup', data=post_data)
+        self.assertEqual(res.status_code, 200)
+
+        self.assertNotIn('Log In', response_text)
+
     def test_login_nonexistent_user(self):
         # TODO: Write a test for the login route. It should:
         # - Make a POST request to /login, sending a username & password
         # - Check that the login form is displayed again, with an appropriate
         #   error message
-        pass
+        create_user()
+
+        post_data = {
+            'username' :'me1',
+            'password' :'password_hash'
+        }
+        res = create_user.post('/signup', data=post_data)
+        self.assertEqual(res.status_code, 200)
 
     def test_login_incorrect_password(self):
         # TODO: Write a test for the login route. It should:
@@ -86,7 +114,15 @@ class AuthTests(TestCase):
         #   an incorrect password
         # - Check that the login form is displayed again, with an appropriate
         #   error message
-        pass
+        create_user()
+
+        post_data = {
+            'username' :'me1',
+            'password' :'password_hash1'
+        }
+        res = create_user.post('/signup', data=post_data)
+        self.assertEqual(res.status_code, 200)
+
 
     def test_logout(self):
         # TODO: Write a test for the logout route. It should:
@@ -94,4 +130,10 @@ class AuthTests(TestCase):
         # - Log the user in (make a POST request to /login)
         # - Make a GET request to /logout
         # - Check that the "login" button appears on the homepage
-        pass
+        create_user()
+        login(self.app, 'me1', 'password')
+
+        response = self.app.get('/logout', follow_redirects=True)
+        response_text = response.get_data(as_text=True)
+        self.assertIn('login', response_text)
+
