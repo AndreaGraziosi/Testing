@@ -279,27 +279,27 @@ class MainTests(unittest.TestCase):
         # self.assertEqual(created_book.id,1)
 
 
-    # def test_unfavorite_book(self):
-    #     # TODO: Login as the user me1, and add book with id 1 to me1's favorites
-    #     create_user()
-    #     login(self.app, 'me1', 'password')
-    #     create_books()
+    def test_unfavorite_book(self):
+        # TODO: Login as the user me1, and add book with id 1 to me1's favorites
+        create_user()
+        login(self.app, 'me1', 'password')
+        create_books()
 
-    #     post_data = {
-    #         'username': 'me1',
-    #         'favorite_books': 'favorite books'
-    #     }
-    #     self.app.post('/favorite_book', data=post_data)
-    #     created_book = Book.query.filter_by(id=1).one()
-    #     self.app.post('/unfavorite/1', data=post_data)
+        post_data = {
+            'username': 'me1',
+            'favorite_books': 'favorite books'
+        }
+        self.app.post('/favorite_book', data=post_data)
+        created_book = Book.query.filter_by(id=1).one()
+        self.app.post('/unfavorite/1', data=post_data)
 
 
-    #     # TODO: Make a POST request to the /unfavorite/1 route
+        # TODO: Make a POST request to the /unfavorite/1 route
 
-    #     # TODO: Verify that the book with id 1 was removed from the user's 
-    #     # favorites
-    #     created_book = Book.query.filter_by(id=1).one()
-    #     self.assertIsNotNone(created_book)
-    #     self.assertNotIn(created_book.id,1)
+        # TODO: Verify that the book with id 1 was removed from the user's 
+        # favorites
+        created_book = Book.query.filter_by(id=1).one()
+        self.assertIsNotNone(created_book)
+        self.assertNotIn(created_book.id,1)
         
         
