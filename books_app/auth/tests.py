@@ -70,9 +70,9 @@ class AuthTests(TestCase):
             'username' :'me1',
             'password' :'password_hash'
         }
-         
+        self.app.post('/signup', data=post_data)
         res = create_user.post('/signup', data=post_data)
-        self.assertEqual(res.status_code, 200)
+        self.assertEqual(res.status_code,300)
         
         result_page_text = res.get_data(as_text=True)
         self.assertIn('That username is taken. Please choose a different one', result_page_text)
