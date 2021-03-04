@@ -270,7 +270,7 @@ class MainTests(unittest.TestCase):
 
         #  Make a POST request to the /favorite/1 route
         
-        self.app.post('/favorite_book/1')
+        self.app.post('/favorite/1')
         # Verify that the book with id 1 was added to the user's favorites
         user = User.query.filter_by(username='me1').one()
         print(user.favorite_books)
@@ -285,21 +285,18 @@ class MainTests(unittest.TestCase):
         login(self.app, 'me1', 'password')
         create_books()
 
-        post_data = {
-            'username': 'me1',
-            'favorite_books': 'favorite books'
-        }
-        self.app.post('/favorite_book', data=post_data)
-        created_book = Book.query.filter_by(id=1).one()
-        self.app.post('/unfavorite/1', data=post_data)
+        # create a user, login.
+        # create a book
 
+        book= Book.query.get(1)
+        user = User.query.get(1)
+        user.favorite_books.append(book)
+        self.app.post('/unfavorite/1')
+        self.assertNotIn(book,user.favorite_books)
+        #add the book to users favorites (favorite_books.append)
+        #Post request to unfavorite route
+        #make sure that it is not in the user favorites list
 
-        # TODO: Make a POST request to the /unfavorite/1 route
-
-        # TODO: Verify that the book with id 1 was removed from the user's 
-        # favorites
-        created_book = Book.query.filter_by(id=1).one()
-        self.assertIsNotNone(created_book)
-        self.assertNotIn(created_book.id,1)
+    
         
         

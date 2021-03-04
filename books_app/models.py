@@ -46,6 +46,7 @@ class Book(db.Model):
     def __repr__(self):
         return f'<Book: {self.title}>'
 
+
 class Author(db.Model):
     """Author model."""
     id = db.Column(db.Integer, primary_key=True)
